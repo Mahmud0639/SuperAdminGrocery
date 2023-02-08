@@ -3,7 +3,10 @@ package com.manuni.admingroceryapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -12,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.manuni.admingroceryapp.databinding.ActivityMainBinding;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,5 +60,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_item,menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.calculation:
+                startActivity(new Intent(MainActivity.this,AllCalculationActivity.class));
+                break;
+        }
+        return true;
     }
 }

@@ -21,6 +21,11 @@ import java.util.ArrayList;
 
 public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopViewHolder>{
 
+    long completedOrder;
+    long  cancelledOrders;
+    long allOrdersCount;
+
+
     private Context context;
     public ArrayList<ModelShop> list;
 
@@ -57,7 +62,12 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopVie
         String profileImage = data.getProfileImage();
         String shopName = data.getShopName();
 
+
+
         loadShopTotalOrders(uid,holder);
+        loadAllCompletedOrders(uid);
+        loadAllCancelledOrders(uid);
+
 
         loadRatings(data,holder);
 
@@ -85,6 +95,8 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopVie
             public void onClick(View view) {
                 Intent intent = new Intent(context,ShopDetailsActivity.class);
                 intent.putExtra("shopUid",uid);
+                intent.putExtra("latitude",latitude);
+                intent.putExtra("longitude",longitude);
                 context.startActivity(intent);
             }
         });
@@ -96,7 +108,7 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopVie
         ref.child(shopUid).child("Orders").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                    long allOrdersCount =  snapshot.getChildrenCount();
+                    allOrdersCount =  snapshot.getChildrenCount();
                     myHolder.binding.orderCount.setText(""+allOrdersCount);
 
             }
@@ -156,5 +168,37 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.AdapterShopVie
 
             binding = RowShopBinding.bind(itemView);
         }
+    }
+    private void loadAllCompletedOrders(String shopId) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
+        reference.child(shopId).child("Orders").orderByChild("orderStatus").equalTo("Completed").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                completedOrder = snapshot.getChildrenCount();
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void loadAllCancelledOrders(String shopId) {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        dbRef.child(shopId).child("Orders").orderByChild("orderStatus").equalTo("Cancelled").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                cancelledOrders = snapshot.getChildrenCount();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
     }
 }

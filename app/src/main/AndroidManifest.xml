@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.manuni.admingroceryapp">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -10,7 +12,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AdminGroceryApp">
+        android:theme="@style/Theme.AdminGroceryApp"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".AllCalculationActivity"
+            android:exported="false" />
         <activity
             android:name=".ShopDetailsActivity"
             android:exported="false" />
@@ -25,10 +31,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-
-
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>
